@@ -1,4 +1,5 @@
 #![allow(unused_imports)]
+use ac_library::*;
 use itertools::Itertools;
 use proconio::{marker::*, *};
 use rand::prelude::*;
