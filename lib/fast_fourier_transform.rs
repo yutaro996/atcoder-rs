@@ -2,20 +2,19 @@ use num_complex::Complex;
 use std::f64::consts::TAU;
 
 fn butterfly(n: usize, q: usize, x: &mut [Complex<f64>]) {
-    if n == 1 {
-        return;
+    if n > 1 {
+        let m = n / 2;
+        let theta0 = TAU / n as f64;
+        for p in 0..m {
+            let wp = Complex::from_polar(1.0, -theta0 * p as f64);
+            let a = x[q + p];
+            let b = x[q + p + m];
+            x[q + p] = a + b;
+            x[q + p + m] = (a - b) * wp;
+        }
+        butterfly(m, q, x);
+        butterfly(m, q + m, x);
     }
-    let m = n / 2;
-    let theta0 = TAU / n as f64;
-    for p in 0..m {
-        let wp = Complex::from_polar(1.0, -theta0 * p as f64);
-        let a = x[q + p];
-        let b = x[q + p + m];
-        x[q + p] = a + b;
-        x[q + p + m] = (a - b) * wp;
-    }
-    butterfly(m, q, x);
-    butterfly(m, q + m, x);
 }
 
 fn bit_reverse(n: usize, x: &mut [Complex<f64>]) {
