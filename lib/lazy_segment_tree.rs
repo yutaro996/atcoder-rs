@@ -164,7 +164,7 @@ impl<AM: ActedMonoid> From<Vec<<AM::X as Monoid>::S>> for LazySegmentTree<AM> {
         let mut ret = Self {
             n,
             size,
-            log: (size as f64).log2() as usize,
+            log: size.ilog2() as usize,
             data,
             lazy: vec![AM::F::e(); size],
         };

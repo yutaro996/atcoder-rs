@@ -64,7 +64,7 @@ impl<M: Monoid> From<Vec<M::S>> for DualSegmentTree<M> {
     fn from(v: Vec<M::S>) -> Self {
         let n = v.len();
         let size = n.next_power_of_two();
-        let log = (size as f64).log2() as usize;
+        let log = size.ilog2() as usize;
         let mut lazy = vec![M::e(); size << 1];
         lazy[size..][..n].clone_from_slice(&v);
         let mut ret = Self { n, size, log, lazy };
