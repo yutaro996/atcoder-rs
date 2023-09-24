@@ -62,8 +62,8 @@ pub fn divisors(n: usize) -> Vec<usize> {
     res
 }
 
-pub fn prime_factorization(mut n: usize) -> BTreeMap<usize, usize> {
-    let mut res = BTreeMap::new();
+pub fn prime_factorization(mut n: usize) -> std::collections::HashMap<usize, usize> {
+    let mut res = std::collections::HashMap::new();
     let mut i = 2;
     while i * i <= n {
         while n % i == 0 {
@@ -91,5 +91,5 @@ pub fn mod_pow(mut x: usize, mut n: usize, m: usize) -> usize {
 }
 
 pub fn mod_inv(x: usize, m: usize) -> usize {
-    mod_pow(x, m - 2)
+    mod_pow(x, m - 2, m)
 }

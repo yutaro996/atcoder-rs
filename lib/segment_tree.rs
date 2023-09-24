@@ -1,14 +1,30 @@
 pub trait Monoid {
-    type S: Copy;
+    type S: std::fmt::Debug + Copy;
     fn e() -> Self::S;
     fn op(a: Self::S, b: Self::S) -> Self::S;
 }
 
+#[derive(Debug)]
 pub struct SegmentTree<M: Monoid> {
     n: usize,
     size: usize,
     log: usize,
     data: Vec<M::S>,
+}
+
+impl<M: Monoid> From<Vec<M::S>> for SegmentTree<M> {
+    fn from(v: Vec<M::S>) -> Self {
+        let n = v.len();
+        let size = n.next_power_of_two();
+        let log = size.ilog2() as usize;
+        let mut data = vec![M::e(); 2 * size];
+        data[size..][..n].clone_from_slice(&v);
+        let mut ret = Self { n, size, log, data };
+        for i in (1..size).rev() {
+            ret.update(i);
+        }
+        ret
+    }
 }
 
 impl<M: Monoid> SegmentTree<M> {
@@ -25,16 +41,16 @@ impl<M: Monoid> SegmentTree<M> {
         }
     }
 
-    pub fn prod(&self, range: impl ops::RangeBounds<usize>) -> M::S {
+    pub fn prod(&self, range: impl std::ops::RangeBounds<usize>) -> M::S {
         let mut l = match range.start_bound() {
-            ops::Bound::Included(&l) => l,
-            ops::Bound::Excluded(&l) => l + 1,
-            ops::Bound::Unbounded => 0,
+            std::ops::Bound::Included(&l) => l,
+            std::ops::Bound::Excluded(&l) => l + 1,
+            std::ops::Bound::Unbounded => 0,
         };
         let mut r = match range.end_bound() {
-            ops::Bound::Included(&r) => r + 1,
-            ops::Bound::Excluded(&r) => r,
-            ops::Bound::Unbounded => self.n,
+            std::ops::Bound::Included(&r) => r + 1,
+            std::ops::Bound::Excluded(&r) => r,
+            std::ops::Bound::Unbounded => self.n,
         };
         assert!(l <= r && r <= self.n);
         let mut sml = M::e();
@@ -57,21 +73,6 @@ impl<M: Monoid> SegmentTree<M> {
     }
 
     fn update(&mut self, i: usize) {
-        self.data[i] = M::op(self.data[i << 1], self.data[i << 1 | 1]);
-    }
-}
-
-impl<M: Monoid> From<Vec<M::S>> for SegmentTree<M> {
-    fn from(v: Vec<M::S>) -> Self {
-        let n = v.len();
-        let size = n.next_power_of_two();
-        let log = size.ilog2() as usize;
-        let mut data = vec![M::e(); size << 1];
-        data[size..][..n].clone_from_slice(&v);
-        let mut ret = Self { n, size, log, data };
-        for i in (1..size).rev() {
-            ret.update(i);
-        }
-        ret
+        self.data[i] = M::op(self.data[2 * i], self.data[2 * i + 1]);
     }
 }

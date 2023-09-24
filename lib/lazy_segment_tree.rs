@@ -1,5 +1,5 @@
 pub trait Monoid {
-    type S: Copy;
+    type S: std::fmt::Debug + Copy;
     fn e() -> Self::S;
     fn op(a: Self::S, b: Self::S) -> Self::S;
 }
@@ -10,12 +10,33 @@ pub trait ActedMonoid {
     fn act(f: <Self::F as Monoid>::S, x: <Self::X as Monoid>::S) -> <Self::X as Monoid>::S;
 }
 
+#[derive(Debug)]
 pub struct LazySegmentTree<AM: ActedMonoid> {
     n: usize,
     size: usize,
     log: usize,
     data: Vec<<AM::X as Monoid>::S>,
     lazy: Vec<<AM::F as Monoid>::S>,
+}
+
+impl<AM: ActedMonoid> From<Vec<<AM::X as Monoid>::S>> for LazySegmentTree<AM> {
+    fn from(v: Vec<<AM::X as Monoid>::S>) -> Self {
+        let n = v.len();
+        let size = n.next_power_of_two();
+        let mut data = vec![AM::X::e(); 2 * size];
+        data[size..][..n].clone_from_slice(&v);
+        let mut ret = Self {
+            n,
+            size,
+            log: size.ilog2() as usize,
+            data,
+            lazy: vec![AM::F::e(); size],
+        };
+        for i in (1..size).rev() {
+            ret.update(i);
+        }
+        ret
+    }
 }
 
 impl<AM: ActedMonoid> LazySegmentTree<AM> {
@@ -44,16 +65,16 @@ impl<AM: ActedMonoid> LazySegmentTree<AM> {
         self.data[i]
     }
 
-    pub fn prod(&mut self, range: impl ops::RangeBounds<usize>) -> <AM::X as Monoid>::S {
+    pub fn prod(&mut self, range: impl std::ops::RangeBounds<usize>) -> <AM::X as Monoid>::S {
         let mut l = match range.start_bound() {
-            ops::Bound::Included(&l) => l,
-            ops::Bound::Excluded(&l) => l + 1,
-            ops::Bound::Unbounded => 0,
+            std::ops::Bound::Included(&l) => l,
+            std::ops::Bound::Excluded(&l) => l + 1,
+            std::ops::Bound::Unbounded => 0,
         };
         let mut r = match range.end_bound() {
-            ops::Bound::Included(&r) => r + 1,
-            ops::Bound::Excluded(&r) => r,
-            ops::Bound::Unbounded => self.n,
+            std::ops::Bound::Included(&r) => r + 1,
+            std::ops::Bound::Excluded(&r) => r,
+            std::ops::Bound::Unbounded => self.n,
         };
         assert!(l <= r && r <= self.n);
         if l == r {
@@ -86,16 +107,16 @@ impl<AM: ActedMonoid> LazySegmentTree<AM> {
         AM::X::op(sml, smr)
     }
 
-    pub fn apply(&mut self, range: impl ops::RangeBounds<usize>, f: <AM::F as Monoid>::S) {
+    pub fn apply(&mut self, range: impl std::ops::RangeBounds<usize>, f: <AM::F as Monoid>::S) {
         let mut l = match range.start_bound() {
-            ops::Bound::Included(&l) => l,
-            ops::Bound::Excluded(&l) => l + 1,
-            ops::Bound::Unbounded => 0,
+            std::ops::Bound::Included(&l) => l,
+            std::ops::Bound::Excluded(&l) => l + 1,
+            std::ops::Bound::Unbounded => 0,
         };
         let mut r = match range.end_bound() {
-            ops::Bound::Included(&r) => r + 1,
-            ops::Bound::Excluded(&r) => r,
-            ops::Bound::Unbounded => self.n,
+            std::ops::Bound::Included(&r) => r + 1,
+            std::ops::Bound::Excluded(&r) => r,
+            std::ops::Bound::Unbounded => self.n,
         };
         assert!(l <= r && r <= self.n);
         if l == r {
@@ -138,7 +159,7 @@ impl<AM: ActedMonoid> LazySegmentTree<AM> {
     }
 
     fn update(&mut self, i: usize) {
-        self.data[i] = AM::X::op(self.data[i << 1], self.data[i << 1 | 1]);
+        self.data[i] = AM::X::op(self.data[2 * i], self.data[2 * i + 1]);
     }
 
     fn all_apply(&mut self, i: usize, f: <AM::F as Monoid>::S) {
@@ -149,28 +170,8 @@ impl<AM: ActedMonoid> LazySegmentTree<AM> {
     }
 
     fn push(&mut self, i: usize) {
-        self.all_apply(i << 1, self.lazy[i]);
-        self.all_apply(i << 1 | 1, self.lazy[i]);
+        self.all_apply(2 * i, self.lazy[i]);
+        self.all_apply(2 * i + 1, self.lazy[i]);
         self.lazy[i] = AM::F::e();
-    }
-}
-
-impl<AM: ActedMonoid> From<Vec<<AM::X as Monoid>::S>> for LazySegmentTree<AM> {
-    fn from(v: Vec<<AM::X as Monoid>::S>) -> Self {
-        let n = v.len();
-        let size = n.next_power_of_two();
-        let mut data = vec![AM::X::e(); size << 1];
-        data[size..][..n].clone_from_slice(&v);
-        let mut ret = Self {
-            n,
-            size,
-            log: size.ilog2() as usize,
-            data,
-            lazy: vec![AM::F::e(); size],
-        };
-        for i in (1..size).rev() {
-            ret.update(i);
-        }
-        ret
     }
 }

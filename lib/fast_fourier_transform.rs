@@ -1,14 +1,20 @@
 use num_complex::Complex;
-use std::f64::consts::PI;
 
-struct FastFourierTransform {
+#[derive(Debug)]
+pub struct FastFourierTransform {
     base: u32,
     rts: Vec<Complex<f64>>,
     rev: Vec<usize>,
 }
 
+impl Default for FastFourierTransform {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl FastFourierTransform {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             base: 1,
             rts: vec![Complex::new(0.0, 0.0), Complex::new(1.0, 0.0)],
@@ -16,27 +22,7 @@ impl FastFourierTransform {
         }
     }
 
-    fn ensure_base(&mut self, nbase: u32) {
-        if nbase <= self.base {
-            return;
-        }
-        self.rev.resize(1 << nbase, 0);
-        self.rts.resize(1 << nbase, Complex::new(0.0, 0.0));
-        for i in 0..(1 << nbase) {
-            self.rev[i] = (self.rev[i >> 1] >> 1) + ((i & 1) << (nbase - 1));
-        }
-        while self.base < nbase {
-            let angle = PI * 2.0 / (1 << (self.base + 1)) as f64;
-            for i in (1 << (self.base - 1))..(1 << self.base) {
-                self.rts[i << 1] = self.rts[i];
-                let angle_i = angle * (2 * i + 1 - (1 << self.base)) as f64;
-                self.rts[(i << 1) + 1] = Complex::new(angle_i.cos(), angle_i.sin());
-            }
-            self.base += 1;
-        }
-    }
-
-    fn fft(&mut self, a: &mut [Complex<f64>], n: usize) {
+    pub fn fft(&mut self, a: &mut [Complex<f64>], n: usize) {
         assert!(n.is_power_of_two());
         let zeros = n.trailing_zeros();
         self.ensure_base(zeros);
@@ -59,7 +45,7 @@ impl FastFourierTransform {
         }
     }
 
-    fn multiply(&mut self, a: &[i32], b: &[i32]) -> Vec<i64> {
+    pub fn multiply(&mut self, a: &[i32], b: &[i32]) -> Vec<i64> {
         let need = a.len() + b.len() - 1;
         let mut nbase = 1;
         while (1 << nbase) < need {
@@ -98,5 +84,25 @@ impl FastFourierTransform {
             }
         }
         ret
+    }
+
+    fn ensure_base(&mut self, nbase: u32) {
+        if nbase <= self.base {
+            return;
+        }
+        self.rev.resize(1 << nbase, 0);
+        self.rts.resize(1 << nbase, Complex::new(0.0, 0.0));
+        for i in 0..(1 << nbase) {
+            self.rev[i] = (self.rev[i >> 1] >> 1) + ((i & 1) << (nbase - 1));
+        }
+        while self.base < nbase {
+            let angle = std::f64::consts::PI * 2.0 / (1 << (self.base + 1)) as f64;
+            for i in (1 << (self.base - 1))..(1 << self.base) {
+                self.rts[i << 1] = self.rts[i];
+                let angle_i = angle * (2 * i + 1 - (1 << self.base)) as f64;
+                self.rts[(i << 1) + 1] = Complex::from_polar(1.0, angle_i);
+            }
+            self.base += 1;
+        }
     }
 }

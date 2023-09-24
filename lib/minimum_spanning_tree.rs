@@ -1,10 +1,19 @@
-pub fn kruskal(edges: &mut [(usize, usize, i64)], v: usize) -> Vec<(usize, usize, i64)> {
-    edges.sort_by(|a, b| a.2.cmp(&b.2));
+#[derive(Debug, Clone)]
+pub struct Edge {
+    from: usize,
+    to: usize,
+    cost: i64,
+}
+
+pub type Edges = Vec<Edge>;
+
+pub fn kruskal(edges: &mut Edges, v: usize) -> Edges {
+    edges.sort_by(|a, b| a.cost.cmp(&b.cost));
     let mut uf = UnionFindTree::new(v);
     let mut es = vec![];
-    for &e in edges.iter() {
-        if uf.union(e.0, e.1) {
-            es.push(e);
+    for e in edges.iter() {
+        if uf.union(e.from, e.to) {
+            es.push(e.clone());
         }
     }
     es

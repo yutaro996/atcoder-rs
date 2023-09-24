@@ -1,16 +1,26 @@
-pub fn dijkstra(graph: &[Vec<(usize, i64)>], s: usize) -> Vec<i64> {
-    let mut dist = vec![i64::MAX; graph.len()];
-    let mut que = BinaryHeap::new();
+
+#[derive(Debug)]
+pub struct Edge {
+    to: usize,
+    cost: usize,
+}
+
+pub type Edges = Vec<Edge>;
+pub type Graph = Vec<Edges>;
+
+pub fn dijkstra(g: &Graph, s: usize) -> Vec<usize> {
+    let mut dist = vec![usize::MAX; g.len()];
+    let mut q = std::collections::BinaryHeap::new();
     dist[s] = 0;
-    que.push((Reverse(dist[s]), s));
-    while let Some((Reverse(cost), v)) = que.pop() {
-        if cost > dist[v] {
+    q.push((std::cmp::Reverse(dist[s]), s));
+    while let Some((std::cmp::Reverse(cost), v)) = q.pop() {
+        if dist[v] < cost {
             continue;
         }
-        for e in &graph[v] {
-            if dist[e.0] < cost + e.1 {
-                dist[e.0] = cost + e.1;
-                que.push((Reverse(dist[e.0]), e.0));
+        for e in &g[v] {
+            if dist[e.to] > cost + e.cost {
+                dist[e.to] = cost + e.cost;
+                q.push((std::cmp::Reverse(dist[e.to]), e.to));
             }
         }
     }

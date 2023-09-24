@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct UnionFindTree {
     n: usize,
     data: Vec<i32>,
@@ -19,7 +20,7 @@ impl UnionFindTree {
             return false;
         }
         if self.data[x] > self.data[y] {
-            mem::swap(&mut x, &mut y);
+            std::mem::swap(&mut x, &mut y);
         }
         self.data[x] += self.data[y];
         self.data[y] = x as i32;
