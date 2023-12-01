@@ -13,7 +13,7 @@ argio = "0.2.0"
 bitvec = "1.0.1"
 counter = "0.5.7"
 hashbag = "0.1.11"
-pathfinding = "4.3.3"
+pathfinding = "4.4.0"
 recur-fn = "2.2.0"
 indexing = { version = "0.4.1", features = ["experimental_pointer_ranges"] }
 amplify = { version = "4.5.0", features = [
