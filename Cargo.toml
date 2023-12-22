@@ -13,7 +13,7 @@ argio = "0.2.0"
 bitvec = "1.0.1"
 counter = "0.5.7"
 hashbag = "0.1.11"
-pathfinding = "4.4.0"
+pathfinding = "4.7.0"
 recur-fn = "2.2.0"
 indexing = { version = "0.4.1", features = ["experimental_pointer_ranges"] }
 amplify = { version = "4.5.0", features = [
@@ -22,7 +22,7 @@ amplify = { version = "4.5.0", features = [
     "stringly_conversions",
 ] }
 amplify_derive = "4.0.0"
-amplify_num = { version = "0.5.0", features = ["std"] }
+amplify_num = { version = "0.5.1", features = ["std"] }
 easy-ext = "1.0.1"
 multimap = "0.9.1"
 btreemultimap = "0.1.1"
