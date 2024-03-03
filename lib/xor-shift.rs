@@ -1,8 +1,8 @@
-struct XorShift64 {
+struct XorShift {
     state: u64,
 }
 
-impl XorShift64 {
+impl XorShift {
     fn new(seed: u64) -> Self {
         Self { state: seed }
     }
