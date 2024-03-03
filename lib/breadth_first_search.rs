@@ -1,4 +1,4 @@
-pub fn breadth_first_search(graph: &[Vec<usize>], v: usize) {
+fn breadth_first_search(graph: &[Vec<usize>], v: usize) {
     let mut queue = VecDeque::new();
     let mut visit = vec![false; graph.len()];
     visit[v] = true;

@@ -1,4 +1,4 @@
-pub fn longest_common_subsequence(s: &[char], t: &[char]) -> usize {
+fn longest_common_subsequence(s: &[char], t: &[char]) -> usize {
     let n = s.len();
     let m = t.len();
     let mut dp = vec![vec![0; m + 1]; n + 1];

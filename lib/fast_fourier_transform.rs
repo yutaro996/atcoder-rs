@@ -1,7 +1,7 @@
 use num_complex::Complex;
 
 #[derive(Debug)]
-pub struct FastFourierTransform {
+struct FastFourierTransform {
     base: u32,
     rts: Vec<Complex<f64>>,
     rev: Vec<usize>,
@@ -14,7 +14,7 @@ impl Default for FastFourierTransform {
 }
 
 impl FastFourierTransform {
-    pub fn new() -> Self {
+    fn new() -> Self {
         Self {
             base: 1,
             rts: vec![Complex::new(0.0, 0.0), Complex::new(1.0, 0.0)],
@@ -22,7 +22,7 @@ impl FastFourierTransform {
         }
     }
 
-    pub fn fft(&mut self, a: &mut [Complex<f64>], n: usize) {
+    fn fft(&mut self, a: &mut [Complex<f64>], n: usize) {
         assert!(n.is_power_of_two());
         let zeros = n.trailing_zeros();
         self.ensure_base(zeros);
@@ -45,7 +45,7 @@ impl FastFourierTransform {
         }
     }
 
-    pub fn multiply(&mut self, a: &[i32], b: &[i32]) -> Vec<i64> {
+    fn multiply(&mut self, a: &[i32], b: &[i32]) -> Vec<i64> {
         let need = a.len() + b.len() - 1;
         let mut nbase = 1;
         while (1 << nbase) < need {

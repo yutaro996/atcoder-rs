@@ -1,7 +1,3 @@
-fn main() {
-
-}
-
 struct XorShift64 {
     state: u64,
 }

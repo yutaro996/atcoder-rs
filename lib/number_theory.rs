@@ -1,4 +1,4 @@
-pub fn gcd(a: usize, b: usize) -> usize {
+fn gcd(a: usize, b: usize) -> usize {
     if b == 0 {
         a
     } else {
@@ -6,11 +6,11 @@ pub fn gcd(a: usize, b: usize) -> usize {
     }
 }
 
-pub fn lcm(a: usize, b: usize) -> usize {
+fn lcm(a: usize, b: usize) -> usize {
     a / gcd(a, b) * b
 }
 
-pub fn is_prime(n: usize) -> bool {
+fn is_prime(n: usize) -> bool {
     if n <= 1 {
         return false;
     }
@@ -30,7 +30,7 @@ pub fn is_prime(n: usize) -> bool {
     true
 }
 
-pub fn sieve(n: usize) -> Vec<bool> {
+fn sieve(n: usize) -> Vec<bool> {
     let mut res = vec![true; n + 1];
     res[0] = false;
     res[1] = false;
@@ -46,7 +46,7 @@ pub fn sieve(n: usize) -> Vec<bool> {
     res
 }
 
-pub fn divisors(n: usize) -> Vec<usize> {
+fn divisors(n: usize) -> Vec<usize> {
     let mut res = vec![];
     let mut i = 1;
     while i * i <= n {
@@ -62,7 +62,7 @@ pub fn divisors(n: usize) -> Vec<usize> {
     res
 }
 
-pub fn prime_factorization(mut n: usize) -> std::collections::HashMap<usize, usize> {
+fn prime_factorization(mut n: usize) -> std::collections::HashMap<usize, usize> {
     let mut res = std::collections::HashMap::new();
     let mut i = 2;
     while i * i <= n {
@@ -78,7 +78,7 @@ pub fn prime_factorization(mut n: usize) -> std::collections::HashMap<usize, usi
     res
 }
 
-pub fn mod_pow(mut x: usize, mut n: usize, m: usize) -> usize {
+fn mod_pow(mut x: usize, mut n: usize, m: usize) -> usize {
     let mut res = 1;
     while n > 0 {
         if n & 1 != 0 {
@@ -90,6 +90,6 @@ pub fn mod_pow(mut x: usize, mut n: usize, m: usize) -> usize {
     res
 }
 
-pub fn mod_inv(x: usize, m: usize) -> usize {
+fn mod_inv(x: usize, m: usize) -> usize {
     mod_pow(x, m - 2, m)
 }

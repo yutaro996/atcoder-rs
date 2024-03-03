@@ -1,17 +1,17 @@
-pub trait Monoid {
+trait Monoid {
     type S: std::fmt::Debug + Copy;
     fn e() -> Self::S;
     fn op(a: Self::S, b: Self::S) -> Self::S;
 }
 
-pub trait ActedMonoid {
+trait ActedMonoid {
     type X: Monoid;
     type F: Monoid;
     fn act(f: <Self::F as Monoid>::S, x: <Self::X as Monoid>::S) -> <Self::X as Monoid>::S;
 }
 
 #[derive(Debug)]
-pub struct LazySegmentTree<AM: ActedMonoid> {
+struct LazySegmentTree<AM: ActedMonoid> {
     n: usize,
     size: usize,
     log: usize,
@@ -40,11 +40,11 @@ impl<AM: ActedMonoid> From<Vec<<AM::X as Monoid>::S>> for LazySegmentTree<AM> {
 }
 
 impl<AM: ActedMonoid> LazySegmentTree<AM> {
-    pub fn new(n: usize) -> Self {
+    fn new(n: usize) -> Self {
         vec![AM::X::e(); n].into()
     }
 
-    pub fn set(&mut self, mut i: usize, x: <AM::X as Monoid>::S) {
+    fn set(&mut self, mut i: usize, x: <AM::X as Monoid>::S) {
         assert!(i < self.n);
         i += self.size;
         for j in (1..=self.log).rev() {
@@ -56,7 +56,7 @@ impl<AM: ActedMonoid> LazySegmentTree<AM> {
         }
     }
 
-    pub fn get(&mut self, mut i: usize) -> <AM::X as Monoid>::S {
+    fn get(&mut self, mut i: usize) -> <AM::X as Monoid>::S {
         assert!(i < self.n);
         i += self.size;
         for j in (1..=self.log).rev() {
@@ -65,7 +65,7 @@ impl<AM: ActedMonoid> LazySegmentTree<AM> {
         self.data[i]
     }
 
-    pub fn prod(&mut self, range: impl std::ops::RangeBounds<usize>) -> <AM::X as Monoid>::S {
+    fn prod(&mut self, range: impl std::ops::RangeBounds<usize>) -> <AM::X as Monoid>::S {
         let mut l = match range.start_bound() {
             std::ops::Bound::Included(&l) => l,
             std::ops::Bound::Excluded(&l) => l + 1,
@@ -107,7 +107,7 @@ impl<AM: ActedMonoid> LazySegmentTree<AM> {
         AM::X::op(sml, smr)
     }
 
-    pub fn apply(&mut self, range: impl std::ops::RangeBounds<usize>, f: <AM::F as Monoid>::S) {
+    fn apply(&mut self, range: impl std::ops::RangeBounds<usize>, f: <AM::F as Monoid>::S) {
         let mut l = match range.start_bound() {
             std::ops::Bound::Included(&l) => l,
             std::ops::Bound::Excluded(&l) => l + 1,

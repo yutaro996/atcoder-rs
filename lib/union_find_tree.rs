@@ -1,18 +1,18 @@
 #[derive(Debug)]
-pub struct UnionFindTree {
+struct UnionFindTree {
     n: usize,
     data: Vec<i32>,
 }
 
 impl UnionFindTree {
-    pub fn new(n: usize) -> Self {
+    fn new(n: usize) -> Self {
         Self {
             n,
             data: vec![-1; n],
         }
     }
 
-    pub fn union(&mut self, mut x: usize, mut y: usize) -> bool {
+    fn union(&mut self, mut x: usize, mut y: usize) -> bool {
         assert!(x < self.n && y < self.n);
         x = self.find(x);
         y = self.find(y);
@@ -27,7 +27,7 @@ impl UnionFindTree {
         true
     }
 
-    pub fn find(&mut self, x: usize) -> usize {
+    fn find(&mut self, x: usize) -> usize {
         assert!(x < self.n);
         if self.data[x] < 0 {
             return x;

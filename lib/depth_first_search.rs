@@ -1,4 +1,4 @@
-pub fn depth_first_search(graph: &[Vec<usize>], v: usize) {
+fn depth_first_search(graph: &[Vec<usize>], v: usize) {
     let mut stack = Vec::new();
     let mut visit = vec![false; graph.len()];
     visit[v] = true;

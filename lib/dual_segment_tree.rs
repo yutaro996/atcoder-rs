@@ -1,11 +1,11 @@
-pub trait Monoid {
+trait Monoid {
     type S: std::fmt::Debug + Copy;
     fn e() -> Self::S;
     fn op(a: Self::S, b: Self::S) -> Self::S;
 }
 
 #[derive(Debug)]
-pub struct DualSegmentTree<M: Monoid> {
+struct DualSegmentTree<M: Monoid> {
     n: usize,
     size: usize,
     log: usize,
@@ -28,11 +28,11 @@ impl<M: Monoid> From<Vec<M::S>> for DualSegmentTree<M> {
 }
 
 impl<M: Monoid> DualSegmentTree<M> {
-    pub fn new(n: usize) -> Self {
+    fn new(n: usize) -> Self {
         vec![M::e(); n].into()
     }
 
-    pub fn get(&mut self, mut i: usize) -> M::S {
+    fn get(&mut self, mut i: usize) -> M::S {
         assert!(i < self.n);
         i += self.size;
         for j in (1..=self.log).rev() {
@@ -41,7 +41,7 @@ impl<M: Monoid> DualSegmentTree<M> {
         self.lazy[i]
     }
 
-    pub fn apply(&mut self, range: impl std::ops::RangeBounds<usize>, f: M::S) {
+    fn apply(&mut self, range: impl std::ops::RangeBounds<usize>, f: M::S) {
         let mut l = match range.start_bound() {
             std::ops::Bound::Included(&l) => l,
             std::ops::Bound::Excluded(&l) => l + 1,

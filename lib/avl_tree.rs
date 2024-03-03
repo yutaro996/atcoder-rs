@@ -78,20 +78,20 @@ impl<T: Ord> AVLNode<T> {
     }
 }
 
-pub struct AVLTree<T> {
+struct AVLTree<T> {
     root: Option<Box<AVLNode<T>>>,
     length: usize,
 }
 
 impl<T: Ord> AVLTree<T> {
-    pub fn new() -> Self {
+    fn new() -> Self {
         Self {
             root: None,
             length: 0,
         }
     }
 
-    pub fn contains(&self, value: &T) -> bool {
+    fn contains(&self, value: &T) -> bool {
         let mut current = &self.root;
         while let Some(node) = current {
             current = match value.cmp(&node.value) {
@@ -103,7 +103,7 @@ impl<T: Ord> AVLTree<T> {
         false
     }
 
-    pub fn insert(&mut self, value: T) -> bool {
+    fn insert(&mut self, value: T) -> bool {
         let inserted = insert(&mut self.root, value);
         if inserted {
             self.length += 1;
@@ -111,7 +111,7 @@ impl<T: Ord> AVLTree<T> {
         inserted
     }
 
-    pub fn remove(&mut self, value: &T) -> bool {
+    fn remove(&mut self, value: &T) -> bool {
         let removed = remove(&mut self.root, value);
         if removed {
             self.length -= 1;
@@ -119,11 +119,11 @@ impl<T: Ord> AVLTree<T> {
         removed
     }
 
-    pub fn len(&self) -> usize {
+    fn len(&self) -> usize {
         self.length
     }
 
-    pub fn is_empty(&self) -> bool {
+    fn is_empty(&self) -> bool {
         self.length == 0
     }
 
@@ -140,7 +140,7 @@ impl<T: Ord> AVLTree<T> {
         node_iter
     }
 
-    pub fn iter(&self) -> Iter<T> {
+    fn iter(&self) -> Iter<T> {
         Iter {
             node_iter: self.node_iter(),
         }
@@ -184,7 +184,7 @@ impl<'a, T: Ord> Iterator for NodeIter<'a, T> {
     }
 }
 
-pub struct Iter<'a, T: Ord> {
+struct Iter<'a, T: Ord> {
     node_iter: NodeIter<'a, T>,
 }
 

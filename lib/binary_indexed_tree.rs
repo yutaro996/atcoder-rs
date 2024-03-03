@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub struct BinaryIndexedTree {
+struct BinaryIndexedTree {
     n: usize,
     data: Vec<i64>,
 }
@@ -20,11 +20,11 @@ impl From<Vec<i64>> for BinaryIndexedTree {
 }
 
 impl BinaryIndexedTree {
-    pub fn new(n: usize) -> Self {
+    fn new(n: usize) -> Self {
         vec![0; n].into()
     }
 
-    pub fn add(&mut self, mut i: usize, x: i64) {
+    fn add(&mut self, mut i: usize, x: i64) {
         assert!(i < self.n);
         i += 1;
         while i <= self.n {
@@ -33,7 +33,7 @@ impl BinaryIndexedTree {
         }
     }
 
-    pub fn sum(&self, range: impl std::ops::RangeBounds<usize>) -> i64 {
+    fn sum(&self, range: impl std::ops::RangeBounds<usize>) -> i64 {
         let l = match range.start_bound() {
             std::ops::Bound::Included(&l) => l,
             std::ops::Bound::Excluded(&l) => l + 1,

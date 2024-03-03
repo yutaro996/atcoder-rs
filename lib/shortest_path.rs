@@ -1,13 +1,13 @@
 #[derive(Debug)]
-pub struct Edge {
+struct Edge {
     to: usize,
     cost: usize,
 }
 
-pub type Edges = Vec<Edge>;
-pub type Graph = Vec<Edges>;
+type Edges = Vec<Edge>;
+type Graph = Vec<Edges>;
 
-pub fn dijkstra(g: &Graph, s: usize) -> Vec<usize> {
+fn dijkstra(g: &Graph, s: usize) -> Vec<usize> {
     let mut d = vec![usize::MAX; g.len()];
     let mut q = std::collections::BinaryHeap::new();
     d[s] = 0;

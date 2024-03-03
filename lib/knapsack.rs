@@ -1,4 +1,4 @@
-pub fn knapsack(w: usize, weight: &[usize], value: &[usize]) -> usize {
+fn knapsack(w: usize, weight: &[usize], value: &[usize]) -> usize {
     let n = weight.len();
     let mut dp = vec![vec![0; w + 1]; n + 1];
     for i in 0..n {

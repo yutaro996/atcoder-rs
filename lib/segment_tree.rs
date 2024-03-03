@@ -1,11 +1,11 @@
-pub trait Monoid {
+trait Monoid {
     type S: std::fmt::Debug + Copy;
     fn e() -> Self::S;
     fn op(a: Self::S, b: Self::S) -> Self::S;
 }
 
 #[derive(Debug)]
-pub struct SegmentTree<M: Monoid> {
+struct SegmentTree<M: Monoid> {
     n: usize,
     size: usize,
     log: usize,
@@ -28,11 +28,11 @@ impl<M: Monoid> From<Vec<M::S>> for SegmentTree<M> {
 }
 
 impl<M: Monoid> SegmentTree<M> {
-    pub fn new(n: usize) -> Self {
+    fn new(n: usize) -> Self {
         vec![M::e(); n].into()
     }
 
-    pub fn set(&mut self, mut i: usize, x: M::S) {
+    fn set(&mut self, mut i: usize, x: M::S) {
         assert!(i < self.n);
         i += self.size;
         self.data[i] = x;
@@ -41,7 +41,7 @@ impl<M: Monoid> SegmentTree<M> {
         }
     }
 
-    pub fn prod(&self, range: impl std::ops::RangeBounds<usize>) -> M::S {
+    fn prod(&self, range: impl std::ops::RangeBounds<usize>) -> M::S {
         let mut l = match range.start_bound() {
             std::ops::Bound::Included(&l) => l,
             std::ops::Bound::Excluded(&l) => l + 1,
