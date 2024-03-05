@@ -1,3 +1,7 @@
-fn main() {
+use proconio::input;
 
+fn main() {
+    input! {
+        
+    }
 }
