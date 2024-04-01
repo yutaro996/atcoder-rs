@@ -41,7 +41,7 @@ num-rational = "0.4.1"
 num-traits = "0.2.18"
 num-derive = "0.4.2"
 ndarray = "0.15.6"
-nalgebra = "0.32.4"
+nalgebra = "0.32.5"
 alga = "0.9.3"
 libm = "0.2.8"
 rand = { version = "0.8.5", features = ["small_rng", "min_const_gen"] }
@@ -52,8 +52,8 @@ rand_hc = "0.3.2"
 rand_pcg = "0.3.1"
 rand_distr = "0.4.3"
 petgraph = "0.6.4"
-indexmap = "2.2.5"
-regex = "1.10.3"
+indexmap = "2.2.6"
+regex = "1.10.4"
 lazy_static = "1.4.0"
 ordered-float = "4.2.0"
 ascii = "1.1.0"
@@ -64,12 +64,12 @@ itertools-num = "0.1.3"
 maplit = "1.0.2"
 either = "1.10.0"
 im-rc = "15.1.0"
-fixedbitset = "0.5.1"
+fixedbitset = "0.5.6"
 bitset-fixed = "0.1.0"
 proconio = { version = "0.4.5", features = ["derive"] }
 text_io = "0.1.12"
 rustc-hash = "1.1.0"
-smallvec = { version = "1.13.1", features = [
+smallvec = { version = "1.13.2", features = [
     "const_generics",
     "const_new",
     "write",
