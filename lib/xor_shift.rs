@@ -1,16 +1,20 @@
-struct XorShift {
-    state: u64,
+struct XorShift64 {
+    x: u64,
 }
 
-impl XorShift {
+impl XorShift64 {
     fn new(seed: u64) -> Self {
-        Self { state: seed }
+        Self {
+            x: seed ^ 88172645463325252,
+        }
     }
 
     fn next(&mut self) -> u64 {
-        self.state ^= self.state << 13;
-        self.state ^= self.state >> 7;
-        self.state ^= self.state << 17;
-        self.state
+        let x = self.x;
+        let x = x ^ (x << 13);
+        let x = x ^ (x >> 7);
+        let x = x ^ (x << 17);
+        self.x = x;
+        x
     }
 }
