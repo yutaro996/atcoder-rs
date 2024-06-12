@@ -41,7 +41,7 @@ num-rational = "0.4.2"
 num-traits = "0.2.19"
 num-derive = "0.4.2"
 ndarray = "0.15.6"
-nalgebra = "0.32.5"
+nalgebra = "0.32.6"
 alga = "0.9.3"
 libm = "0.2.8"
 rand = { version = "0.8.5", features = ["small_rng", "min_const_gen"] }
