@@ -13,7 +13,7 @@ argio = "0.2.0"
 bitvec = "1.0.1"
 counter = "0.5.7"
 hashbag = "0.1.12"
-pathfinding = "4.9.1"
+pathfinding = "4.10.0"
 recur-fn = "2.2.0"
 indexing = { version = "0.4.1", features = ["experimental_pointer_ranges"] }
 amplify = { version = "4.6.0", features = [
@@ -41,7 +41,7 @@ num-rational = "0.4.2"
 num-traits = "0.2.19"
 num-derive = "0.4.2"
 ndarray = "0.15.6"
-nalgebra = "0.32.6"
+nalgebra = "0.33.0"
 alga = "0.9.3"
 libm = "0.2.8"
 rand = { version = "0.8.5", features = ["small_rng", "min_const_gen"] }
@@ -54,7 +54,7 @@ rand_distr = "0.4.3"
 petgraph = "0.6.5"
 indexmap = "2.2.6"
 regex = "1.10.5"
-lazy_static = "1.4.0"
+lazy_static = "1.5.0"
 ordered-float = "4.2.0"
 ascii = "1.1.0"
 permutohedron = "0.2.4"
@@ -68,7 +68,7 @@ fixedbitset = "0.5.7"
 bitset-fixed = "0.1.0"
 proconio = { version = "0.4.5", features = ["derive"] }
 text_io = "0.1.12"
-rustc-hash = "1.1.0"
+rustc-hash = "2.0.0"
 smallvec = { version = "1.13.2", features = [
     "const_generics",
     "const_new",
