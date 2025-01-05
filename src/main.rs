@@ -7,6 +7,6 @@ use std::{cmp::*, collections::*, mem::*};
 #[fastout]
 fn main() {
     input! {
-        
+
     }
 }
